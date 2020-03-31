@@ -1,0 +1,15 @@
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\bin\Debug\RushInput.exe.config
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\bin\Debug\RushInput.exe
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\bin\Debug\RushInput.pdb
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\MainWindow.g.cs
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\App.g.cs
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput_MarkupCompile.cache
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput_MarkupCompile.lref
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\MainWindow.baml
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.g.resources
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.Properties.Resources.resources
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.exe
+C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Debug\RushInput.pdb
