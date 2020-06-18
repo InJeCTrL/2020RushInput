@@ -12,3 +12,18 @@ C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Release\RushInput.cs
 C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Release\RushInput.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Release\RushInput.exe
 C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Release\RushInput.pdb
+D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.exe.config
+D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.exe
+D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.pdb
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csprojAssemblyReference.cache
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\MainWindow.g.cs
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\App.g.cs
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput_MarkupCompile.cache
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput_MarkupCompile.lref
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\MainWindow.baml
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.g.resources
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.Properties.Resources.resources
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csproj.GenerateResource.cache
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csproj.CoreCompileInputs.cache
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.exe
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.pdb
