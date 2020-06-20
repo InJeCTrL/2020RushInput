@@ -105,6 +105,10 @@ namespace RushInput
         /// </summary>
         public string Cookies { get; set; }
         /// <summary>
+        /// 填报页面HTML
+        /// </summary>
+        private string page_Input = "";
+        /// <summary>
         /// 验证网站、账号并尝试获取Cookies
         /// </summary>
         /// <param name="DayTime">执行时间</param>
@@ -127,26 +131,32 @@ namespace RushInput
                     byte[] LoginPayload = Encoding.UTF8.GetBytes("userid=" + userid + "&userpwd=" + userpwd);
                     reqstream.Write(LoginPayload, 0, LoginPayload.Length);
                     reqstream.Flush();
-                    WebResponse webResponse = webRequest.GetResponse();
-                    string cookies = webResponse.Headers.Get("Set-Cookie");
-                    Stream respstream = webResponse.GetResponseStream();
-                    StreamReader streamReader = new StreamReader(respstream);
-                    string ret = streamReader.ReadToEnd();
-                    // Console.WriteLine(cookies);
-                    if (ret.IndexOf("当日填报结束") != -1)
+                    using (WebResponse webResponse = webRequest.GetResponse())
                     {
-                        Cookies = "";
-                        LatestResult = DayTime + "当日填报结束";
-                    }
-                    else if (ret.IndexOf("title: '登录失败'") != -1)
-                    {
-                        Cookies = "";
-                        LatestResult = DayTime + "用户名或密码错误";
-                    }
-                    else
-                    {
-                        Cookies = cookies;
-                        LoginResult = true;
+                        string cookies = webResponse.Headers.Get("Set-Cookie");
+                        using (Stream respstream = webResponse.GetResponseStream())
+                        {
+                            using (StreamReader streamReader = new StreamReader(respstream))
+                            {
+                                string ret = streamReader.ReadToEnd();
+                                // Console.WriteLine(cookies);
+                                if (ret.IndexOf("当日填报结束") != -1)
+                                {
+                                    Cookies = "";
+                                    LatestResult = DayTime + "当日填报结束";
+                                }
+                                else if (ret.IndexOf("title: '登录失败'") != -1)
+                                {
+                                    Cookies = "";
+                                    LatestResult = DayTime + "用户名或密码错误";
+                                }
+                                else
+                                {
+                                    Cookies = cookies;
+                                    LoginResult = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -155,30 +165,45 @@ namespace RushInput
                 Cookies = "";
                 LatestResult = DayTime + "网站异常";
             }
+            finally
+            {
+                if (webRequest != null)
+                {
+                    webRequest.Abort();
+                }
+            }
             return LoginResult;
         }
         /// <summary>
         /// 检查当日是否已填报
         /// </summary>
-        /// <param name="DayTime">执行时间</param>
         /// <returns>
         /// 已填报: true;
         /// 未填报: false
         /// </returns>
-        private bool CheckSubmitted(string DayTime)
+        private bool CheckSubmitted()
         {
             bool flag = false;
             WebRequest webRequest = WebRequest.Create("http://tjxx.lnu.edu.cn/inputExt.asp");
             webRequest.Headers.Set(HttpRequestHeader.Cookie, Cookies);
             using (WebResponse webResponse = webRequest.GetResponse())
             {
-                Stream stream = webResponse.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                string ret = reader.ReadToEnd();
-                if (ret.IndexOf("已填报") != -1)
+                using (Stream stream = webResponse.GetResponseStream())
                 {
-                    flag = true;
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        page_Input = reader.ReadToEnd();
+                        if (page_Input.IndexOf("已填报") != -1)
+                        {
+                            flag = true;
+                        }
+                    }
+
                 }
+            }
+            if (webRequest != null)
+            {
+                webRequest.Abort();
             }
             return flag;
         }
@@ -187,20 +212,12 @@ namespace RushInput
         /// </summary>
         private void UpdateLocation()
         {
-            WebRequest webRequest = WebRequest.Create("http://tjxx.lnu.edu.cn/inputExt.asp");
-            webRequest.Headers.Set(HttpRequestHeader.Cookie, Cookies);
-            using (WebResponse webResponse = webRequest.GetResponse())
-            {
-                Stream stream = webResponse.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                string ret = reader.ReadToEnd();
-                string Loca1 = ret.Substring(ret.IndexOf("value=\"") + 7);
-                string Loca2 = Loca1.Substring(Loca1.IndexOf("value=\"") + 7);
-                Loca1 = Loca1.Substring(0, Loca1.IndexOf('"'));
-                Loca2 = Loca2.Substring(0, Loca2.IndexOf('"'));
-                xszd = Loca1;
-                xxdz = Loca2;
-            }
+            string Loca1 = page_Input.Substring(page_Input.IndexOf("value=\"") + 7);
+            string Loca2 = Loca1.Substring(Loca1.IndexOf("value=\"") + 7);
+            Loca1 = Loca1.Substring(0, Loca1.IndexOf('"'));
+            Loca2 = Loca2.Substring(0, Loca2.IndexOf('"'));
+            xszd = Loca1;
+            xxdz = Loca2;
         }
         /// <summary>
         /// 更新IP所在地址
@@ -220,7 +237,7 @@ namespace RushInput
                                 time.Day.ToString() + " ";
             if (Verify(DayTime))
             {
-                if (CheckSubmitted(DayTime) == false)
+                if (CheckSubmitted() == false)
                 {
                     if (UseLatestLoc)
                     {
@@ -253,9 +270,15 @@ namespace RushInput
                             );
                         reqstream.Write(Payload, 0, Payload.Length);
                         reqstream.Flush();
-                        webRequest.GetResponse();
+                        WebResponse webResponse = webRequest.GetResponse();
+                        webResponse.Dispose();
+                        webResponse.Close();
                     }
-                    if (CheckSubmitted(DayTime))
+                    if (webRequest != null)
+                    {
+                        webRequest.Abort();
+                    }
+                    if (CheckSubmitted())
                     {
                         LatestResult = DayTime + "自动填报成功";
                     }
@@ -266,6 +289,14 @@ namespace RushInput
                 }
                 else
                 {
+                    if (UseLatestLoc)
+                    {
+                        UpdateLocation();
+                    }
+                    if (IPLocFolowLoc)
+                    {
+                        UpdateIPLocation();
+                    }
                     LatestResult = DayTime + "已填报, 无需重复提交";
                 }
             }

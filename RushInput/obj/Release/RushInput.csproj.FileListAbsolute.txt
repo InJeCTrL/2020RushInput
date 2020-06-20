@@ -15,7 +15,6 @@ C:\Users\Administrator\Desktop\Test\RushInput\RushInput\obj\Release\RushInput.pd
 D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.exe.config
 D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.exe
 D:\Code Trunk\CSharp\RushInput\RushInput\bin\Release\RushInput.pdb
-D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csprojAssemblyReference.cache
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\MainWindow.g.cs
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\App.g.cs
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput_MarkupCompile.cache
