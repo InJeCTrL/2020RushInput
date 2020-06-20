@@ -26,3 +26,4 @@ D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csproj.GenerateRe
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csproj.CoreCompileInputs.cache
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.exe
 D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.pdb
+D:\Code Trunk\CSharp\RushInput\RushInput\obj\Release\RushInput.csprojAssemblyReference.cache

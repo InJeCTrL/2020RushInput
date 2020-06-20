@@ -70,7 +70,7 @@
                 <DataGridTextColumn Header="IP所在地" Binding="{Binding gdipszd}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="每天7:05按列表自动填报" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top"/>
+        <Label Content="每天6:10按列表自动填报" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top"/>
         <Button Content="导出" Margin="0,10,10,0" HorizontalAlignment="Right" Width="121" Height="33" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Window>
