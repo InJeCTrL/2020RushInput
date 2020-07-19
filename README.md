@@ -2,6 +2,10 @@
 
 > 辽宁大学疫情通自动填报工具
 
+## 获取
+
+[1.0 Release(Any CPU)](https://github.com/InJeCTrL/2020RushInput/releases/download/1.0/RushInput.exe)
+
 ## 使用方法
 
 在列表中双击新增条目
