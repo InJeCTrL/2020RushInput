@@ -16,7 +16,7 @@ namespace RushInput
                 return new[]
                 {
                     "无",
-                    "有（省内乘私家车）",
+                    "有（省内）",
                     "有（其它情况）"
                 };
             }
