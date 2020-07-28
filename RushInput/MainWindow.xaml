@@ -20,8 +20,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="省市县" Binding="{Binding xszd}"></DataGridTextColumn>
-                <DataGridTextColumn Header="地址" Binding="{Binding xxdz}"></DataGridTextColumn>
+                <DataGridTextColumn Header="省市" Binding="{Binding xszd}"></DataGridTextColumn>
+                <DataGridTextColumn Header="县（区）" Binding="{Binding xszq}"></DataGridTextColumn>
+                <DataGridTextColumn Header="街道（乡镇）" Binding="{Binding xszjd}"></DataGridTextColumn>
+                <DataGridTextColumn Header="社区（村）" Binding="{Binding xszsq}"></DataGridTextColumn>
+                <DataGridTextColumn Header="详细地址" Binding="{Binding jtdz}"></DataGridTextColumn>
                 <DataGridTemplateColumn Header="城市流动">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

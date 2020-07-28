@@ -78,7 +78,10 @@ namespace RushInput
             UseLatestLoc = true;
             IPLocFolowLoc = true;
             xszd = "";
-            xxdz = "";
+            xszq = "";
+            xszjd = "";
+            xszsq = "";
+            jtdz = "";
             csld = opt_csld[0];
             csldxx = "";
             hbjc = opt_hbjc[0];
@@ -214,10 +217,19 @@ namespace RushInput
         {
             string Loca1 = page_Input.Substring(page_Input.IndexOf("value=\"") + 7);
             string Loca2 = Loca1.Substring(Loca1.IndexOf("value=\"") + 7);
+            string Loca3 = Loca2.Substring(Loca2.IndexOf("value=\"") + 7);
+            string Loca4 = Loca3.Substring(Loca3.IndexOf("value=\"") + 7);
+            string Loca5 = Loca4.Substring(Loca4.IndexOf("value=\"") + 7);
             Loca1 = Loca1.Substring(0, Loca1.IndexOf('"'));
             Loca2 = Loca2.Substring(0, Loca2.IndexOf('"'));
+            Loca3 = Loca3.Substring(0, Loca3.IndexOf('"'));
+            Loca4 = Loca4.Substring(0, Loca4.IndexOf('"'));
+            Loca5 = Loca5.Substring(0, Loca5.IndexOf('"'));
             xszd = Loca1;
-            xxdz = Loca2;
+            xszq = Loca2;
+            xszjd = Loca3;
+            xszsq = Loca4;
+            jtdz = Loca5;
         }
         /// <summary>
         /// 更新IP所在地址
@@ -255,7 +267,10 @@ namespace RushInput
                     {
                         byte[] Payload = Encoding.UTF8.GetBytes(
                             "xszd=" + xszd +
-                            "&xxdz=" + xxdz +
+                            "&xszq=" + xszq +
+                            "&xszjd=" + xszjd +
+                            "&xszsq=" + xszsq +
+                            "&jtdz=" + jtdz +
                             "&csld=" + csld +
                             "&csldxx=" + csldxx +
                             "&hbjc=" + hbjc +
@@ -310,7 +325,7 @@ namespace RushInput
         /// </summary>
         public bool IPLocFolowLoc { get; set; }
         /// <summary>
-        /// 学生所在地省市县
+        /// 学生所在地省市
         /// </summary>
         private string _xszd;
         public string xszd
@@ -329,21 +344,78 @@ namespace RushInput
             }
         }
         /// <summary>
-        /// 详细地址
+        /// 学生所在地县（区）
         /// </summary>
-        private string _xxdz;
-        public string xxdz
+        private string _xszq;
+        public string xszq
         {
             get
             {
-                return _xxdz;
+                return _xszq;
             }
             set
             {
-                _xxdz = value;
+                _xszq = value;
                 if (PropertyChanged != null)
                 {
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("xxdz"));
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("xszq"));
+                }
+            }
+        }
+        /// <summary>
+        /// 学生所在地街道（乡镇）
+        /// </summary>
+        private string _xszjd;
+        public string xszjd
+        {
+            get
+            {
+                return _xszjd;
+            }
+            set
+            {
+                _xszjd = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("xszjd"));
+                }
+            }
+        }
+        /// <summary>
+        /// 学生所在地社区（村）
+        /// </summary>
+        private string _xszsq;
+        public string xszsq
+        {
+            get
+            {
+                return _xszsq;
+            }
+            set
+            {
+                _xszsq = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("xszsq"));
+                }
+            }
+        }
+        /// <summary>
+        /// 详细地址
+        /// </summary>
+        private string _jtdz;
+        public string jtdz
+        {
+            get
+            {
+                return _jtdz;
+            }
+            set
+            {
+                _jtdz = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("jtdz"));
                 }
             }
         }
@@ -382,7 +454,22 @@ namespace RushInput
         /// <summary>
         /// 高德IP定位所在地
         /// </summary>
-        public string gdipszd { get; set; }
+        private string _gdipszd;
+        public string gdipszd
+        {
+            get
+            {
+                return _gdipszd;
+            }
+            set
+            {
+                _gdipszd = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("gdipszd"));
+                }
+            }
+        }
         /// <summary>
         /// 百度IP定位所在地
         /// </summary>
