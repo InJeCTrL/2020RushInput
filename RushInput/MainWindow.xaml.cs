@@ -90,14 +90,14 @@ namespace RushInput
         {
             DateTime Today = DateTime.Now;
             // 当日12点后或当日Rush过, 设定次日6点10填报
-            if (Today.Hour > 12 || TodayComplete)
+            if (Today.Hour >= 12 || TodayComplete)
             {
                 DateTime Tomorrow = Today.AddDays(1);
                 t.Change((int)(new DateTime(Tomorrow.Year, Tomorrow.Month, Tomorrow.Day,
                                     6, 10, 0) - Today).TotalMilliseconds, Timeout.Infinite);
             }
             // 在当天填报时间范围内, 立刻填报
-            else if (Today.Hour >= 6 && Today.Hour <= 12)
+            else if (Today.Hour >= 6 && Today.Hour < 12)
             {
                 t.Change(0, Timeout.Infinite);
             }
@@ -124,7 +124,7 @@ namespace RushInput
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            using (FileStream fs = new FileStream("userlist.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("userlist.xml", FileMode.Create))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<User>));
                 xmlSerializer.Serialize(fs, UserList);
