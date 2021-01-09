@@ -89,23 +89,23 @@ namespace RushInput
         private void SetTime(bool TodayComplete = false)
         {
             DateTime Today = DateTime.Now;
-            // 当日12点后或当日Rush过, 设定次日6点10填报
+            // 当日12点后或当日Rush过, 设定次日7点30填报
             if (Today.Hour >= 12 || TodayComplete)
             {
                 DateTime Tomorrow = Today.AddDays(1);
                 t.Change((int)(new DateTime(Tomorrow.Year, Tomorrow.Month, Tomorrow.Day,
-                                    6, 10, 0) - Today).TotalMilliseconds, Timeout.Infinite);
+                                    7, 30, 0) - Today).TotalMilliseconds, Timeout.Infinite);
             }
             // 在当天填报时间范围内, 立刻填报
-            else if (Today.Hour >= 6 && Today.Hour < 12)
+            else if (Today.Hour >= 7 && Today.Hour < 12)
             {
                 t.Change(0, Timeout.Infinite);
             }
-            // 当日6点前, 设定当日6点10填报
+            // 当日7点前, 设定当日7点30填报
             else
             {
                 t.Change((int)(new DateTime(Today.Year, Today.Month, Today.Day,
-                    6, 10, 0) - Today).TotalMilliseconds, Timeout.Infinite);
+                    7, 30, 0) - Today).TotalMilliseconds, Timeout.Infinite);
             }
         }
         /// <summary>
