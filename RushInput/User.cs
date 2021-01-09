@@ -1,5 +1,8 @@
-﻿using System;
+﻿using OpenCvSharp;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -9,6 +12,10 @@ namespace RushInput
     public class User: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// 验证码数字样例图
+        /// </summary>
+        private static Mat[] SampleNumber = new Mat[10];
         public static string[] opt_csld
         {
             get
@@ -70,6 +77,24 @@ namespace RushInput
                 };
             }
         }
+        /// <summary>
+        /// 导入验证码数字样例图（二值化）
+        /// </summary>
+        static User()
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                using (Bitmap Number = (Bitmap)Samples.ResourceManager.GetObject(i.ToString()))
+                {
+                    using (Mat src = OpenCvSharp.Extensions.BitmapConverter.ToMat(Number)
+                        .CvtColor(ColorConversionCodes.BGR2GRAY))
+                    {
+                        Mat result = src.Threshold(127, 255, ThresholdTypes.Binary);
+                        SampleNumber[i] = result;
+                    }
+                }
+            }
+        }
         public User()
         {
             userid = "学号";
@@ -112,6 +137,45 @@ namespace RushInput
         /// </summary>
         private string page_Input = "";
         /// <summary>
+        /// 返回验证码识别结果
+        /// </summary>
+        /// <returns>string: 4 Numbers</returns>
+        private string GetCaptchaCode()
+        {
+            string ret = "";
+            using (Mat src = new Mat("tmp.png", ImreadModes.Grayscale))
+            {
+                using (Mat result = src.Threshold(127, 255, ThresholdTypes.Binary))
+                {
+                    for (int i_num = 0; i_num < 4; ++i_num)
+                    {
+                        var NumberReady = result.SubMat(0, 10, 2 + i_num * 10, 8 + i_num * 10);
+                        for (int i_sample = 0; i_sample < 10; ++i_sample)
+                        {
+                            bool right = true;
+                            for (int pixel = 0; pixel < 60; ++pixel)
+                            {
+                                int pos_x = pixel % 10, pos_y = pixel / 10;
+                                if (SampleNumber[i_sample].At<byte>(pos_x, pos_y) == 0 &&
+                                    NumberReady.At<byte>(pos_x, pos_y) != SampleNumber[i_sample].At<byte>(pos_x, pos_y))
+                                {
+                                    right = false;
+                                    break;
+                                }
+                            }
+                            if (right)
+                            {
+                                ret += i_sample.ToString();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            File.Delete("tmp.png");
+            return ret;
+        }
+        /// <summary>
         /// 验证网站、账号并尝试获取Cookies
         /// </summary>
         /// <param name="DayTime">执行时间</param>
@@ -123,40 +187,62 @@ namespace RushInput
         {
             bool LoginResult = false;
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("http://tjxx.lnu.edu.cn/login_do.asp");
+            HttpWebRequest webRequest_chk = (HttpWebRequest)WebRequest.Create("http://tjxx.lnu.edu.cn/inc/checkcode.asp");
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             // 禁止自动跳转
             webRequest.AllowAutoRedirect = false;
             try
             {
-                using (Stream reqstream = webRequest.GetRequestStream())
+                // 下载验证码
+                using (WebResponse webResponse_chk = webRequest_chk.GetResponse())
                 {
-                    byte[] LoginPayload = Encoding.UTF8.GetBytes("userid=" + userid + "&userpwd=" + userpwd);
-                    reqstream.Write(LoginPayload, 0, LoginPayload.Length);
-                    reqstream.Flush();
-                    using (WebResponse webResponse = webRequest.GetResponse())
+                    string cookies = webResponse_chk.Headers.Get("Set-Cookie");
+                    // Console.WriteLine(cookies);
+                    using (Stream responseStream = webResponse_chk.GetResponseStream())
                     {
-                        string cookies = webResponse.Headers.Get("Set-Cookie");
-                        using (Stream respstream = webResponse.GetResponseStream())
+                        using (Stream stream = new FileStream("tmp.png", FileMode.Create))
                         {
-                            using (StreamReader streamReader = new StreamReader(respstream))
+                            byte[] bArr = new byte[1024];
+                            int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                            while (size > 0)
                             {
-                                string ret = streamReader.ReadToEnd();
-                                // Console.WriteLine(cookies);
-                                if (ret.IndexOf("当日填报结束") != -1)
+                                stream.Write(bArr, 0, size);
+                                size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                            }
+                        }
+                    }
+                    // 解析验证码
+                    string code = GetCaptchaCode();
+                    // 验证登录
+                    webRequest.Headers.Set(HttpRequestHeader.Cookie, cookies);
+                    using (Stream reqstream = webRequest.GetRequestStream())
+                    {
+                        byte[] LoginPayload = Encoding.UTF8.GetBytes("userid=" + userid + "&userpwd=" + userpwd + "&checkcode=" + code);
+                        reqstream.Write(LoginPayload, 0, LoginPayload.Length);
+                        reqstream.Flush();
+                        using (WebResponse webResponse = webRequest.GetResponse())
+                        {
+                            using (Stream respstream = webResponse.GetResponseStream())
+                            {
+                                using (StreamReader streamReader = new StreamReader(respstream))
                                 {
-                                    Cookies = "";
-                                    LatestResult = DayTime + "当日填报结束";
-                                }
-                                else if (ret.IndexOf("title: '登录失败'") != -1)
-                                {
-                                    Cookies = "";
-                                    LatestResult = DayTime + "用户名或密码错误";
-                                }
-                                else
-                                {
-                                    Cookies = cookies;
-                                    LoginResult = true;
+                                    string ret = streamReader.ReadToEnd();
+                                    if (ret.IndexOf("当日填报结束") != -1)
+                                    {
+                                        Cookies = "";
+                                        LatestResult = DayTime + "当日填报结束";
+                                    }
+                                    else if (ret.IndexOf("title: '登录失败'") != -1)
+                                    {
+                                        Cookies = "";
+                                        LatestResult = DayTime + "用户名或密码错误";
+                                    }
+                                    else
+                                    {
+                                        Cookies = cookies;
+                                        LoginResult = true;
+                                    }
                                 }
                             }
                         }
