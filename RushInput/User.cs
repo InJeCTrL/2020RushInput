@@ -77,6 +77,17 @@ namespace RushInput
                 };
             }
         }
+        public static string[] opt_xcgj
+        {
+            get
+            {
+                return new[]
+                {
+                    "无",
+                    "有"
+                };
+            }
+        }
         /// <summary>
         /// 导入验证码数字样例图（二值化）
         /// </summary>
@@ -115,6 +126,8 @@ namespace RushInput
             fyzzxx = "";
             glzt = opt_glzt[0];
             zxzg = opt_zxzg[0];
+            xcgj = opt_xcgj[0];
+            xcgjxx = "";
             gdipszd = "";
             bdipszd = "";
             txipszd = "";
@@ -365,6 +378,8 @@ namespace RushInput
                             "&fyzzxx=" + fyzzxx +
                             "&glzt=" + glzt +
                             "&zxzg=" + zxzg +
+                            "&xcgj=" + xcgj + 
+                            "&xcgjxx=" + xcgjxx + 
                             "&gdipszd=" + gdipszd +
                             "&bdipszd=" + bdipszd +
                             "&txipszd=" + txipszd
@@ -537,6 +552,14 @@ namespace RushInput
         /// 在校在岗
         /// </summary>
         public string zxzg { get; set; }
+        /// <summary>
+        /// 行程轨迹
+        /// </summary>
+        public string xcgj { get; set; }
+        /// <summary>
+        /// 行程轨迹信息
+        /// </summary>
+        public string xcgjxx { get; set; }
         /// <summary>
         /// 高德IP定位所在地
         /// </summary>
