@@ -374,6 +374,7 @@ namespace RushInput
                             "&csldxx=" + csldxx +
                             "&hbjc=" + hbjc +
                             "&hbjcxx=" + hbjcxx +
+                            "&drtw=" + drtw +
                             "&fyzz=" + fyzz +
                             "&fyzzxx=" + fyzzxx +
                             "&glzt=" + glzt +
@@ -536,6 +537,19 @@ namespace RushInput
         /// 人员接触信息
         /// </summary>
         public string hbjcxx { get; set; }
+        /// <summary>
+        /// 当日体温
+        /// </summary>
+        public string drtw
+        {
+            get
+            {
+                #region 随机体温35.9~36.8
+                var rd = new Random();
+                return (rd.NextDouble() + 35.9).ToString().Substring(0, 4);
+                #endregion
+            }
+        }
         /// <summary>
         /// 当日身体症状选项
         /// </summary>
